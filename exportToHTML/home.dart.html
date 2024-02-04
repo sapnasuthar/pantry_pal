@@ -1,0 +1,282 @@
+<html>
+<head>
+<title>home.dart</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bcbec4;}
+.s1 { color: #6aab73;}
+.s2 { color: #bcbec4;}
+.s3 { color: #cf8e6d;}
+.s4 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+home.dart</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">'dart:convert'</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">'dart:io'</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">'package:google_project/views/recipe_view.dart'</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">'package:http/http.dart' </span><span class="s0">as http</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">'package:flutter/foundation.dart'</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">'package:flutter/material.dart'</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">'package:url_launcher/url_launcher.dart'</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">'../models/recipe_model.dart'</span><span class="s2">;</span>
+
+
+<span class="s3">class </span><span class="s0">Home </span><span class="s3">extends </span><span class="s0">StatefulWidget </span><span class="s2">{</span>
+
+  <span class="s0">@override</span>
+  <span class="s0">State</span><span class="s2">&lt;</span><span class="s0">Home</span><span class="s2">&gt; </span><span class="s0">createState</span><span class="s2">() =&gt; </span><span class="s0">_HomeState</span><span class="s2">();</span>
+<span class="s2">}</span>
+
+<span class="s3">class </span><span class="s0">_HomeState </span><span class="s3">extends </span><span class="s0">State</span><span class="s2">&lt;</span><span class="s0">Home</span><span class="s2">&gt; {</span>
+  <span class="s0">List</span><span class="s2">&lt;</span><span class="s0">RecipeModel</span><span class="s2">&gt; </span><span class="s0">recipes </span><span class="s2">= [];</span>
+  <span class="s0">late String ingridients</span><span class="s2">;</span>
+  <span class="s0">bool loading </span><span class="s2">= </span><span class="s3">false</span><span class="s2">;</span>
+  <span class="s0">String query </span><span class="s2">= </span><span class="s1">&quot;&quot;</span><span class="s2">;</span>
+  <span class="s0">TextEditingController textEditingController </span><span class="s2">= </span><span class="s3">new </span><span class="s0">TextEditingController</span><span class="s2">();</span>
+
+
+
+  <span class="s0">@override</span>
+  <span class="s3">void </span><span class="s0">initState</span><span class="s2">(){</span>
+    <span class="s3">super</span><span class="s2">.</span><span class="s0">initState</span><span class="s2">();</span>
+  <span class="s2">}</span>
+
+  <span class="s0">getRecipes</span><span class="s2">(</span><span class="s0">String query</span><span class="s2">) </span><span class="s0">async </span><span class="s2">{</span>
+
+    <span class="s0">String url </span><span class="s2">= </span><span class="s1">&quot;https://api.edamam.com/search?q=</span><span class="s2">${</span><span class="s0">textEditingController</span><span class="s2">.</span><span class="s0">text</span><span class="s2">}</span><span class="s1">&amp;app_id=f45a3ded&amp;app_key=c3c803a36ba675761ebdf51c2d72952c&amp;from=0&amp;to=12&amp;calories=591-722&amp;health=alcohol-free&quot;</span><span class="s2">;</span>
+
+    <span class="s3">var </span><span class="s0">response </span><span class="s2">= </span><span class="s0">await http</span><span class="s2">.</span><span class="s0">get</span><span class="s2">(</span><span class="s0">Uri</span><span class="s2">.</span><span class="s0">parse</span><span class="s2">(</span><span class="s0">url</span><span class="s2">));</span>
+    <span class="s0">Map</span><span class="s2">&lt;</span><span class="s0">String</span><span class="s2">, </span><span class="s0">dynamic</span><span class="s2">&gt; </span><span class="s0">jsonData </span><span class="s2">= </span><span class="s0">jsonDecode</span><span class="s2">(</span><span class="s0">response</span><span class="s2">.</span><span class="s0">body</span><span class="s2">);</span>
+
+      <span class="s0">jsonData</span><span class="s2">[</span><span class="s1">&quot;hits&quot;</span><span class="s2">].</span><span class="s0">forEach</span><span class="s2">((</span><span class="s0">element</span><span class="s2">){</span>
+      <span class="s0">print</span><span class="s2">(</span><span class="s0">element</span><span class="s2">.</span><span class="s0">toString</span><span class="s2">());</span>
+
+      <span class="s0">RecipeModel recipeModel </span><span class="s2">= </span><span class="s3">new </span><span class="s0">RecipeModel</span><span class="s2">(</span><span class="s0">url</span><span class="s2">: </span><span class="s1">''</span><span class="s2">, </span><span class="s0">source</span><span class="s2">: </span><span class="s1">''</span><span class="s2">, </span><span class="s0">label</span><span class="s2">: </span><span class="s1">''</span><span class="s2">, </span><span class="s0">image</span><span class="s2">: </span><span class="s3">null</span><span class="s2">);</span>
+      <span class="s0">recipeModel </span><span class="s2">= </span><span class="s0">RecipeModel</span><span class="s2">.</span><span class="s0">fromMap</span><span class="s2">(</span><span class="s0">element</span><span class="s2">[</span><span class="s1">&quot;recipe&quot;</span><span class="s2">]);</span>
+      <span class="s0">recipes</span><span class="s2">.</span><span class="s0">add</span><span class="s2">(</span><span class="s0">recipeModel</span><span class="s2">);</span>
+
+    <span class="s2">});</span>
+
+    <span class="s0">setState</span><span class="s2">(() {});</span>
+    <span class="s0">print</span><span class="s2">(</span><span class="s1">&quot;</span><span class="s2">${</span><span class="s0">recipes</span><span class="s2">.</span><span class="s0">toString</span><span class="s2">()}</span><span class="s1">&quot;</span><span class="s2">);</span>
+
+  <span class="s2">}</span>
+
+
+  <span class="s0">@override</span>
+  <span class="s0">Widget build</span><span class="s2">(</span><span class="s0">BuildContext context</span><span class="s2">) {</span>
+    <span class="s3">return </span><span class="s0">Scaffold</span><span class="s2">(</span>
+        <span class="s0">body</span><span class="s2">: </span><span class="s0">Stack</span><span class="s2">(</span>
+            <span class="s0">children</span><span class="s2">: &lt;</span><span class="s0">Widget</span><span class="s2">&gt; [</span>
+              <span class="s0">Container</span><span class="s2">(</span>
+                <span class="s0">height</span><span class="s2">: </span><span class="s0">MediaQuery</span><span class="s2">.</span><span class="s0">of</span><span class="s2">(</span><span class="s0">context</span><span class="s2">).</span><span class="s0">size</span><span class="s2">.</span><span class="s0">height</span><span class="s2">,</span>
+                <span class="s0">width</span><span class="s2">: </span><span class="s0">MediaQuery</span><span class="s2">.</span><span class="s0">of</span><span class="s2">(</span><span class="s0">context</span><span class="s2">).</span><span class="s0">size</span><span class="s2">.</span><span class="s0">width</span><span class="s2">,</span>
+                <span class="s0">decoration</span><span class="s2">: </span><span class="s0">BoxDecoration</span><span class="s2">(</span>
+                    <span class="s0">gradient</span><span class="s2">: </span><span class="s0">LinearGradient</span><span class="s2">(</span>
+                        <span class="s0">colors</span><span class="s2">: [</span>
+                          <span class="s3">const </span><span class="s0">Color</span><span class="s2">(</span><span class="s4">0xffD0F0C0</span><span class="s2">),</span>
+                          <span class="s3">const </span><span class="s0">Color</span><span class="s2">(</span><span class="s4">0xffD0F0C0</span><span class="s2">)</span>
+                        <span class="s2">]</span>
+                    <span class="s2">)</span>
+                <span class="s2">),</span>
+              <span class="s2">),</span>
+              <span class="s0">SingleChildScrollView</span><span class="s2">(</span>
+                <span class="s0">child</span><span class="s2">: </span><span class="s0">Container</span><span class="s2">(</span>
+                    <span class="s0">padding</span><span class="s2">: </span><span class="s0">EdgeInsets</span><span class="s2">.</span><span class="s0">symmetric</span><span class="s2">(</span><span class="s0">vertical</span><span class="s2">: </span><span class="s4">50</span><span class="s2">, </span><span class="s0">horizontal</span><span class="s2">: </span><span class="s4">30</span><span class="s2">),</span>
+                    <span class="s0">child</span><span class="s2">: </span><span class="s0">Column</span><span class="s2">(</span>
+                        <span class="s0">crossAxisAlignment</span><span class="s2">: </span><span class="s0">CrossAxisAlignment</span><span class="s2">.</span><span class="s0">start</span><span class="s2">,</span>
+                        <span class="s0">children</span><span class="s2">: &lt;</span><span class="s0">Widget</span><span class="s2">&gt; [</span>
+                          <span class="s0">Row</span><span class="s2">(</span>
+                              <span class="s0">mainAxisAlignment</span><span class="s2">: </span><span class="s0">kIsWeb </span><span class="s2">? </span><span class="s0">MainAxisAlignment</span><span class="s2">.</span><span class="s0">start</span><span class="s2">: </span><span class="s0">MainAxisAlignment</span><span class="s2">.</span><span class="s0">center</span><span class="s2">,</span>
+                              <span class="s0">children</span><span class="s2">: &lt;</span><span class="s0">Widget</span><span class="s2">&gt;[</span>
+                                <span class="s0">Text</span><span class="s2">(</span><span class="s1">&quot;Pantry&quot;</span><span class="s2">, </span><span class="s0">style</span><span class="s2">: </span><span class="s0">TextStyle</span><span class="s2">(</span>
+                                    <span class="s0">color</span><span class="s2">: </span><span class="s0">Colors</span><span class="s2">.</span><span class="s0">green</span><span class="s2">,</span>
+                                    <span class="s0">fontSize</span><span class="s2">: </span><span class="s4">40</span><span class="s2">,</span>
+                                    <span class="s0">fontWeight</span><span class="s2">: </span><span class="s0">FontWeight</span><span class="s2">.</span><span class="s0">w700</span><span class="s2">,</span>
+                                <span class="s2">),),</span>
+                                <span class="s0">Text</span><span class="s2">(</span><span class="s1">&quot;Pal&quot;</span><span class="s2">, </span><span class="s0">style</span><span class="s2">: </span><span class="s0">TextStyle</span><span class="s2">(</span>
+                                    <span class="s0">color</span><span class="s2">: </span><span class="s0">Colors</span><span class="s2">.</span><span class="s0">black</span><span class="s2">,</span>
+                                    <span class="s0">fontSize</span><span class="s2">: </span><span class="s4">40</span><span class="s2">,</span>
+                                    <span class="s0">fontWeight</span><span class="s2">: </span><span class="s0">FontWeight</span><span class="s2">.</span><span class="s0">w700</span><span class="s2">,</span>
+                                <span class="s2">),),</span>
+                              <span class="s2">]</span>
+                          <span class="s2">),</span>
+                          <span class="s0">SizedBox</span><span class="s2">(</span><span class="s0">height</span><span class="s2">: </span><span class="s4">30</span><span class="s2">,),</span>
+
+                          <span class="s0">Text</span><span class="s2">(</span><span class="s1">&quot;List Your Ingredients Below&quot;</span><span class="s2">, </span><span class="s0">style</span><span class="s2">: </span><span class="s0">TextStyle</span><span class="s2">(</span>
+                              <span class="s0">fontSize</span><span class="s2">: </span><span class="s4">22</span><span class="s2">,</span>
+                              <span class="s0">color</span><span class="s2">: </span><span class="s0">Colors</span><span class="s2">.</span><span class="s0">black</span><span class="s2">,</span>
+                              <span class="s0">fontWeight</span><span class="s2">: </span><span class="s0">FontWeight</span><span class="s2">.</span><span class="s0">bold</span><span class="s2">,</span>
+                          <span class="s2">),),</span>
+                          <span class="s0">SizedBox</span><span class="s2">(</span><span class="s0">height</span><span class="s2">: </span><span class="s4">8</span><span class="s2">,),</span>
+                          <span class="s0">Text</span><span class="s2">(</span><span class="s1">&quot;We will give you nutritous foods based off the ingredients you have&quot;</span><span class="s2">, </span><span class="s0">style</span><span class="s2">: </span><span class="s0">TextStyle</span><span class="s2">(</span>
+                              <span class="s0">fontSize</span><span class="s2">: </span><span class="s4">18</span><span class="s2">,</span>
+                              <span class="s0">color</span><span class="s2">: </span><span class="s0">Colors</span><span class="s2">.</span><span class="s0">black</span><span class="s2">,</span>
+                              <span class="s0">fontStyle</span><span class="s2">: </span><span class="s0">FontStyle</span><span class="s2">.</span><span class="s0">italic</span>
+                          <span class="s2">),),</span>
+                          <span class="s0">SizedBox</span><span class="s2">(</span><span class="s0">height</span><span class="s2">: </span><span class="s4">30</span><span class="s2">,),</span>
+                          <span class="s0">Container</span><span class="s2">(</span>
+                            <span class="s0">width</span><span class="s2">: </span><span class="s0">MediaQuery</span><span class="s2">.</span><span class="s0">of</span><span class="s2">(</span><span class="s0">context</span><span class="s2">).</span><span class="s0">size</span><span class="s2">.</span><span class="s0">width</span><span class="s2">,</span>
+                            <span class="s0">child</span><span class="s2">: </span><span class="s0">Row</span><span class="s2">(</span>
+                              <span class="s0">children</span><span class="s2">: &lt;</span><span class="s0">Widget</span><span class="s2">&gt; [</span>
+                                <span class="s0">Expanded</span><span class="s2">(</span>
+                                  <span class="s0">child</span><span class="s2">: </span><span class="s0">TextField</span><span class="s2">(</span>
+
+                                    <span class="s0">controller</span><span class="s2">: </span><span class="s0">textEditingController</span><span class="s2">,</span>
+                                    <span class="s0">decoration</span><span class="s2">: </span><span class="s0">InputDecoration</span><span class="s2">(</span>
+                                        <span class="s0">hintText</span><span class="s2">: </span><span class="s1">&quot;Enter Ingredients&quot;</span><span class="s2">,</span>
+                                        <span class="s0">hintStyle</span><span class="s2">: </span><span class="s0">TextStyle</span><span class="s2">(</span>
+                                            <span class="s0">fontSize</span><span class="s2">: </span><span class="s4">18</span><span class="s2">,</span>
+                                            <span class="s0">color</span><span class="s2">: </span><span class="s0">Colors</span><span class="s2">.</span><span class="s0">black</span><span class="s2">.</span><span class="s0">withOpacity</span><span class="s2">(</span><span class="s4">0.5</span><span class="s2">),</span>
+                                        <span class="s2">)</span>
+                                    <span class="s2">),</span>
+                                    <span class="s0">style</span><span class="s2">: </span><span class="s0">TextStyle</span><span class="s2">(</span>
+                                        <span class="s0">fontSize</span><span class="s2">: </span><span class="s4">18</span>
+                                    <span class="s2">),</span>
+                                  <span class="s2">),</span>
+                                <span class="s2">),</span>
+                                <span class="s0">SizedBox</span><span class="s2">(</span><span class="s0">width</span><span class="s2">: </span><span class="s4">16</span><span class="s2">,),</span>
+                                <span class="s0">InkWell</span><span class="s2">(</span>
+                                  <span class="s0">onTap</span><span class="s2">:(){</span>
+                                    <span class="s3">if</span><span class="s2">(</span><span class="s0">textEditingController</span><span class="s2">.</span><span class="s0">text</span><span class="s2">.</span><span class="s0">isNotEmpty</span><span class="s2">){</span>
+                                      <span class="s0">getRecipes</span><span class="s2">(</span><span class="s0">textEditingController</span><span class="s2">.</span><span class="s0">text</span><span class="s2">);</span>
+                                      <span class="s0">print</span><span class="s2">(</span><span class="s1">&quot;just do it&quot;</span><span class="s2">);</span>
+                                    <span class="s2">}</span><span class="s3">else</span><span class="s2">{</span>
+                                      <span class="s0">print</span><span class="s2">(</span><span class="s1">&quot;Just don't do it&quot;</span><span class="s2">);</span>
+                                    <span class="s2">}</span>
+                                  <span class="s2">},</span>
+                                  <span class="s0">child</span><span class="s2">: </span><span class="s0">Container</span><span class="s2">(</span>
+                                    <span class="s0">child</span><span class="s2">: </span><span class="s0">Icon</span><span class="s2">(</span>
+                                      <span class="s0">Icons</span><span class="s2">.</span><span class="s0">search</span><span class="s2">,</span>
+                                      <span class="s0">color</span><span class="s2">: </span><span class="s0">Colors</span><span class="s2">.</span><span class="s0">black</span><span class="s2">,</span>
+                                    <span class="s2">),</span>
+                                  <span class="s2">),</span>
+                                <span class="s2">)</span>
+                              <span class="s2">],</span>
+                            <span class="s2">),</span>
+                          <span class="s2">),</span>
+                          <span class="s0">SizedBox</span><span class="s2">(</span>
+                            <span class="s0">height</span><span class="s2">: </span><span class="s4">25</span><span class="s2">,</span>
+                          <span class="s2">),</span>
+                          <span class="s0">Container</span><span class="s2">(</span>
+                            <span class="s0">child</span><span class="s2">: </span><span class="s0">GridView</span><span class="s2">(</span>
+                              <span class="s0">shrinkWrap</span><span class="s2">: </span><span class="s3">true</span><span class="s2">,</span>
+                              <span class="s0">scrollDirection</span><span class="s2">: </span><span class="s0">Axis</span><span class="s2">.</span><span class="s0">vertical</span><span class="s2">,</span>
+                              <span class="s0">physics</span><span class="s2">: </span><span class="s0">ClampingScrollPhysics</span><span class="s2">(),</span>
+                              <span class="s0">gridDelegate</span><span class="s2">: </span><span class="s0">SliverGridDelegateWithMaxCrossAxisExtent</span><span class="s2">(</span>
+                                  <span class="s0">maxCrossAxisExtent</span><span class="s2">: </span><span class="s4">200</span><span class="s2">, </span><span class="s0">mainAxisSpacing</span><span class="s2">: </span><span class="s4">10.0</span>
+                              <span class="s2">),</span>
+                              <span class="s0">children</span><span class="s2">:  </span><span class="s0">List</span><span class="s2">.</span><span class="s0">generate</span><span class="s2">(</span><span class="s0">recipes</span><span class="s2">.</span><span class="s0">length</span><span class="s2">, (</span><span class="s0">index</span><span class="s2">) {</span>
+                                <span class="s3">return </span><span class="s0">GridTile</span><span class="s2">(</span>
+                                    <span class="s0">child</span><span class="s2">: </span><span class="s0">RecipieTile</span><span class="s2">(</span>
+                                        <span class="s0">title</span><span class="s2">: </span><span class="s0">recipes</span><span class="s2">[</span><span class="s0">index</span><span class="s2">].</span><span class="s0">label</span><span class="s2">,</span>
+                                        <span class="s0">desc</span><span class="s2">: </span><span class="s0">recipes</span><span class="s2">[</span><span class="s0">index</span><span class="s2">].</span><span class="s0">source</span><span class="s2">,</span>
+                                        <span class="s0">imgUrl</span><span class="s2">: </span><span class="s0">recipes</span><span class="s2">[</span><span class="s0">index</span><span class="s2">].</span><span class="s0">image</span><span class="s2">!,</span>
+                                        <span class="s0">url</span><span class="s2">: </span><span class="s0">recipes</span><span class="s2">[</span><span class="s0">index</span><span class="s2">].</span><span class="s0">url</span><span class="s2">,</span>
+                                    <span class="s2">));</span>
+                              <span class="s2">})),</span>
+                          <span class="s2">),</span>
+                        <span class="s2">],</span>
+                    <span class="s2">),</span>
+                <span class="s2">),</span>
+              <span class="s2">),</span>
+            <span class="s2">],</span>
+        <span class="s2">),</span>
+    <span class="s2">);</span>
+  <span class="s2">}</span>
+<span class="s2">}</span>
+<span class="s3">class </span><span class="s0">RecipieTile </span><span class="s3">extends </span><span class="s0">StatefulWidget </span><span class="s2">{</span>
+  <span class="s3">final </span><span class="s0">String title</span><span class="s2">, </span><span class="s0">desc</span><span class="s2">, </span><span class="s0">imgUrl</span><span class="s2">, </span><span class="s0">url</span><span class="s2">;</span>
+
+  <span class="s0">RecipieTile</span><span class="s2">({</span><span class="s0">required </span><span class="s3">this</span><span class="s2">.</span><span class="s0">title</span><span class="s2">, </span><span class="s0">required </span><span class="s3">this</span><span class="s2">.</span><span class="s0">desc</span><span class="s2">, </span><span class="s0">required </span><span class="s3">this</span><span class="s2">.</span><span class="s0">imgUrl</span><span class="s2">, </span><span class="s0">required </span><span class="s3">this</span><span class="s2">.</span><span class="s0">url</span><span class="s2">});</span>
+
+  <span class="s0">@override</span>
+  <span class="s0">_RecipieTileState createState</span><span class="s2">() =&gt; </span><span class="s0">_RecipieTileState</span><span class="s2">();</span>
+<span class="s2">}</span>
+
+<span class="s3">class </span><span class="s0">_RecipieTileState </span><span class="s3">extends </span><span class="s0">State</span><span class="s2">&lt;</span><span class="s0">RecipieTile</span><span class="s2">&gt; {</span>
+  <span class="s0">_launchURL</span><span class="s2">(</span><span class="s0">String url</span><span class="s2">) </span><span class="s0">async </span><span class="s2">{</span>
+    <span class="s0">print</span><span class="s2">(</span><span class="s0">url</span><span class="s2">);</span>
+    <span class="s3">if </span><span class="s2">(</span><span class="s0">await canLaunch</span><span class="s2">(</span><span class="s0">url</span><span class="s2">)) {</span>
+      <span class="s0">await launch</span><span class="s2">(</span><span class="s0">url</span><span class="s2">);</span>
+    <span class="s2">} </span><span class="s3">else </span><span class="s2">{</span>
+      <span class="s3">throw </span><span class="s1">'Could not launch </span><span class="s2">$</span><span class="s0">url</span><span class="s1">'</span><span class="s2">;</span>
+    <span class="s2">}</span>
+  <span class="s2">}</span>
+
+  <span class="s0">@override</span>
+  <span class="s0">Widget build</span><span class="s2">(</span><span class="s0">BuildContext context</span><span class="s2">) {</span>
+    <span class="s3">return </span><span class="s0">Wrap</span><span class="s2">(</span>
+      <span class="s0">children</span><span class="s2">: &lt;</span><span class="s0">Widget</span><span class="s2">&gt;[</span>
+        <span class="s0">GestureDetector</span><span class="s2">(</span>
+          <span class="s0">onTap</span><span class="s2">: () {</span>
+            <span class="s3">if </span><span class="s2">(</span><span class="s0">kIsWeb</span><span class="s2">) {</span>
+              <span class="s0">_launchURL</span><span class="s2">(</span><span class="s0">widget</span><span class="s2">.</span><span class="s0">url</span><span class="s2">);</span>
+            <span class="s2">} </span><span class="s3">else </span><span class="s2">{</span>
+              <span class="s0">print</span><span class="s2">(</span><span class="s0">widget</span><span class="s2">.</span><span class="s0">url </span><span class="s2">+ </span><span class="s1">&quot; this is what we are going to see&quot;</span><span class="s2">);</span>
+              <span class="s0">Navigator</span><span class="s2">.</span><span class="s0">push</span><span class="s2">(</span>
+                  <span class="s0">context</span><span class="s2">,</span>
+                  <span class="s0">MaterialPageRoute</span><span class="s2">(</span>
+                      <span class="s0">builder</span><span class="s2">: (</span><span class="s0">context</span><span class="s2">) =&gt; </span><span class="s0">RecipeView</span><span class="s2">(</span>
+                        <span class="s0">postUrl</span><span class="s2">: </span><span class="s0">widget</span><span class="s2">.</span><span class="s0">url</span><span class="s2">,</span>
+                      <span class="s2">)));</span>
+            <span class="s2">}</span>
+          <span class="s2">},</span>
+          <span class="s0">child</span><span class="s2">: </span><span class="s0">Container</span><span class="s2">(</span>
+            <span class="s0">margin</span><span class="s2">: </span><span class="s0">EdgeInsets</span><span class="s2">.</span><span class="s0">all</span><span class="s2">(</span><span class="s4">8</span><span class="s2">),</span>
+            <span class="s0">child</span><span class="s2">: </span><span class="s0">Stack</span><span class="s2">(</span>
+              <span class="s0">children</span><span class="s2">: &lt;</span><span class="s0">Widget</span><span class="s2">&gt;[</span>
+                <span class="s0">Image</span><span class="s2">.</span><span class="s0">network</span><span class="s2">(</span>
+                  <span class="s0">widget</span><span class="s2">.</span><span class="s0">imgUrl</span><span class="s2">,</span>
+                  <span class="s0">height</span><span class="s2">: </span><span class="s4">200</span><span class="s2">,</span>
+                  <span class="s0">width</span><span class="s2">: </span><span class="s4">200</span><span class="s2">,</span>
+                  <span class="s0">fit</span><span class="s2">: </span><span class="s0">BoxFit</span><span class="s2">.</span><span class="s0">cover</span><span class="s2">,</span>
+                <span class="s2">),</span>
+                <span class="s0">Container</span><span class="s2">(</span>
+                  <span class="s0">width</span><span class="s2">: </span><span class="s4">200</span><span class="s2">,</span>
+                  <span class="s0">alignment</span><span class="s2">: </span><span class="s0">Alignment</span><span class="s2">.</span><span class="s0">bottomLeft</span><span class="s2">,</span>
+                  <span class="s0">decoration</span><span class="s2">: </span><span class="s0">BoxDecoration</span><span class="s2">(</span>
+                      <span class="s0">gradient</span><span class="s2">: </span><span class="s0">LinearGradient</span><span class="s2">(</span>
+                          <span class="s0">colors</span><span class="s2">: [</span><span class="s0">Colors</span><span class="s2">.</span><span class="s0">white30</span><span class="s2">, </span><span class="s0">Colors</span><span class="s2">.</span><span class="s0">white</span><span class="s2">],</span>
+                          <span class="s0">begin</span><span class="s2">: </span><span class="s0">FractionalOffset</span><span class="s2">.</span><span class="s0">centerRight</span><span class="s2">,</span>
+                          <span class="s0">end</span><span class="s2">: </span><span class="s0">FractionalOffset</span><span class="s2">.</span><span class="s0">centerLeft</span><span class="s2">)),</span>
+                  <span class="s0">child</span><span class="s2">: </span><span class="s0">Padding</span><span class="s2">(</span>
+                    <span class="s0">padding</span><span class="s2">: </span><span class="s3">const </span><span class="s0">EdgeInsets</span><span class="s2">.</span><span class="s0">all</span><span class="s2">(</span><span class="s4">8.0</span><span class="s2">),</span>
+                    <span class="s0">child</span><span class="s2">: </span><span class="s0">Column</span><span class="s2">(</span>
+                      <span class="s0">crossAxisAlignment</span><span class="s2">: </span><span class="s0">CrossAxisAlignment</span><span class="s2">.</span><span class="s0">start</span><span class="s2">,</span>
+                      <span class="s0">children</span><span class="s2">: &lt;</span><span class="s0">Widget</span><span class="s2">&gt;[</span>
+                        <span class="s0">Text</span><span class="s2">(</span>
+                          <span class="s0">widget</span><span class="s2">.</span><span class="s0">title</span><span class="s2">,</span>
+                          <span class="s0">style</span><span class="s2">: </span><span class="s0">TextStyle</span><span class="s2">(</span>
+                              <span class="s0">fontSize</span><span class="s2">: </span><span class="s4">13</span><span class="s2">,</span>
+                              <span class="s0">color</span><span class="s2">: </span><span class="s0">Colors</span><span class="s2">.</span><span class="s0">black54</span><span class="s2">,</span>
+                              <span class="s0">fontFamily</span><span class="s2">: </span><span class="s1">'Overpass'</span><span class="s2">),</span>
+                        <span class="s2">),</span>
+                        <span class="s0">Text</span><span class="s2">(</span>
+                          <span class="s0">widget</span><span class="s2">.</span><span class="s0">desc</span><span class="s2">,</span>
+                          <span class="s0">style</span><span class="s2">: </span><span class="s0">TextStyle</span><span class="s2">(</span>
+                              <span class="s0">fontSize</span><span class="s2">: </span><span class="s4">10</span><span class="s2">,</span>
+                              <span class="s0">color</span><span class="s2">: </span><span class="s0">Colors</span><span class="s2">.</span><span class="s0">black54</span><span class="s2">,</span>
+                              <span class="s0">fontFamily</span><span class="s2">: </span><span class="s1">'OverpassRegular'</span><span class="s2">),</span>
+                        <span class="s2">)</span>
+                      <span class="s2">],</span>
+                    <span class="s2">),</span>
+                  <span class="s2">),</span>
+                <span class="s2">)</span>
+              <span class="s2">],</span>
+            <span class="s2">),</span>
+          <span class="s2">),</span>
+        <span class="s2">),</span>
+      <span class="s2">],</span>
+    <span class="s2">);</span>
+  <span class="s2">}</span>
+<span class="s2">}</span>
+
+</pre>
+</body>
+</html>

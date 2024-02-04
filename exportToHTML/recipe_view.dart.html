@@ -1,0 +1,117 @@
+<html>
+<head>
+<title>recipe_view.dart</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bcbec4;}
+.s1 { color: #6aab73;}
+.s2 { color: #bcbec4;}
+.s3 { color: #cf8e6d;}
+.s4 { color: #7a7e85;}
+.s5 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+recipe_view.dart</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">'dart:async'</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">'package:flutter/foundation.dart'</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">'package:flutter/material.dart'</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">'package:webview_flutter/webview_flutter.dart'</span><span class="s2">;</span>
+
+<span class="s3">class </span><span class="s0">RecipeView </span><span class="s3">extends </span><span class="s0">StatefulWidget </span><span class="s2">{</span>
+  <span class="s4">//const RecipeView({super.key, required this.postUrl});</span>
+
+  <span class="s3">final </span><span class="s0">String postUrl</span><span class="s2">;</span>
+
+  <span class="s0">RecipeView</span><span class="s2">({</span><span class="s0">required </span><span class="s3">this</span><span class="s2">.</span><span class="s0">postUrl</span><span class="s2">});</span>
+
+  <span class="s0">@override</span>
+  <span class="s0">_RecipeViewState createState</span><span class="s2">() =&gt; </span><span class="s0">_RecipeViewState</span><span class="s2">();</span>
+  <span class="s4">//State&lt;RecipeView&gt; createState() =&gt; _RecipeViewState();</span>
+<span class="s2">}</span>
+
+<span class="s3">class </span><span class="s0">_RecipeViewState </span><span class="s3">extends </span><span class="s0">State</span><span class="s2">&lt;</span><span class="s0">RecipeView</span><span class="s2">&gt; {</span>
+
+  <span class="s3">final </span><span class="s0">Completer</span><span class="s2">&lt;</span><span class="s0">WebViewController</span><span class="s2">&gt; </span><span class="s0">_controller </span><span class="s2">= </span><span class="s0">Completer</span><span class="s2">&lt;</span><span class="s0">WebViewController</span><span class="s2">&gt;();</span>
+
+  <span class="s0">late String finalUrl</span><span class="s2">;</span>
+
+  <span class="s0">@override</span>
+  <span class="s3">void </span><span class="s0">initState</span><span class="s2">() {</span>
+    <span class="s3">super</span><span class="s2">.</span><span class="s0">initState</span><span class="s2">();</span>
+
+    <span class="s3">if</span><span class="s2">(</span><span class="s0">widget</span><span class="s2">.</span><span class="s0">postUrl</span><span class="s2">.</span><span class="s0">contains</span><span class="s2">(</span><span class="s1">&quot;http://&quot;</span><span class="s2">)){</span>
+      <span class="s0">finalUrl </span><span class="s2">= </span><span class="s0">widget</span><span class="s2">.</span><span class="s0">postUrl</span><span class="s2">.</span><span class="s0">replaceAll</span><span class="s2">(</span><span class="s1">&quot;http://&quot;</span><span class="s2">, </span><span class="s1">&quot;https://&quot;</span><span class="s2">);</span>
+    <span class="s2">}</span><span class="s3">else</span><span class="s2">{</span>
+      <span class="s0">finalUrl </span><span class="s2">= </span><span class="s0">widget</span><span class="s2">.</span><span class="s0">postUrl</span><span class="s2">;</span>
+    <span class="s2">}</span>
+  <span class="s2">}</span>
+
+
+  <span class="s0">@override</span>
+  <span class="s0">Widget build</span><span class="s2">(</span><span class="s0">BuildContext context</span><span class="s2">) {</span>
+    <span class="s3">return </span><span class="s0">Scaffold</span><span class="s2">(</span>
+      <span class="s0">body</span><span class="s2">: </span><span class="s0">Container</span><span class="s2">(</span>
+          <span class="s0">child</span><span class="s2">: </span><span class="s0">Column</span><span class="s2">(</span>
+            <span class="s0">children</span><span class="s2">: &lt;</span><span class="s0">Widget</span><span class="s2">&gt;[</span>
+              <span class="s0">Container</span><span class="s2">(</span>
+                <span class="s0">padding</span><span class="s2">: </span><span class="s0">EdgeInsets</span><span class="s2">.</span><span class="s0">symmetric</span><span class="s2">(</span><span class="s0">vertical</span><span class="s2">: </span><span class="s5">30</span><span class="s2">, </span><span class="s0">horizontal</span><span class="s2">: </span><span class="s5">30</span><span class="s2">),</span>
+                <span class="s0">width</span><span class="s2">: </span><span class="s0">MediaQuery</span><span class="s2">.</span><span class="s0">of</span><span class="s2">(</span><span class="s0">context</span><span class="s2">).</span><span class="s0">size</span><span class="s2">.</span><span class="s0">width</span><span class="s2">,</span>
+                <span class="s0">decoration</span><span class="s2">: </span><span class="s0">BoxDecoration</span><span class="s2">(</span>
+                  <span class="s0">gradient</span><span class="s2">:</span><span class="s0">LinearGradient</span><span class="s2">(</span>
+                    <span class="s0">colors</span><span class="s2">:[</span>
+                      <span class="s3">const </span><span class="s0">Color</span><span class="s2">(</span><span class="s5">0xfff9f9f9</span><span class="s2">),</span>
+                      <span class="s3">const </span><span class="s0">Color</span><span class="s2">(</span><span class="s5">0xfff9f9f9</span><span class="s2">)</span>
+                    <span class="s2">],</span>
+                    <span class="s0">begin</span><span class="s2">: </span><span class="s0">FractionalOffset</span><span class="s2">.</span><span class="s0">topRight</span><span class="s2">,</span>
+                    <span class="s0">end</span><span class="s2">: </span><span class="s0">FractionalOffset</span><span class="s2">.</span><span class="s0">bottomLeft</span>
+                  <span class="s2">)</span>
+                <span class="s2">),</span>
+                <span class="s0">child</span><span class="s2">: </span><span class="s0">Row</span><span class="s2">(</span>
+                    <span class="s0">mainAxisAlignment</span><span class="s2">: </span><span class="s0">kIsWeb </span><span class="s2">? </span><span class="s0">MainAxisAlignment</span><span class="s2">.</span><span class="s0">start</span><span class="s2">: </span><span class="s0">MainAxisAlignment</span><span class="s2">.</span><span class="s0">center</span><span class="s2">,</span>
+                    <span class="s0">children</span><span class="s2">: &lt;</span><span class="s0">Widget</span><span class="s2">&gt;[</span>
+                      <span class="s0">Text</span><span class="s2">(</span><span class="s1">&quot;PantryPal&quot;</span><span class="s2">, </span><span class="s0">style</span><span class="s2">: </span><span class="s0">TextStyle</span><span class="s2">(</span>
+                          <span class="s0">color</span><span class="s2">: </span><span class="s0">Colors</span><span class="s2">.</span><span class="s0">green</span><span class="s2">,</span>
+                          <span class="s0">fontSize</span><span class="s2">: </span><span class="s5">18</span><span class="s2">,</span>
+                          <span class="s0">fontFamily</span><span class="s2">: </span><span class="s1">'Overpass'</span><span class="s2">,</span>
+                          <span class="s0">fontWeight</span><span class="s2">: </span><span class="s0">FontWeight</span><span class="s2">.</span><span class="s0">w500</span>
+                      <span class="s2">),),</span>
+                      <span class="s0">Text </span><span class="s2">(</span><span class="s1">&quot;Recipes&quot;</span><span class="s2">,</span>
+                        <span class="s0">style</span><span class="s2">: </span><span class="s0">TextStyle</span><span class="s2">(</span>
+                          <span class="s0">fontSize</span><span class="s2">: </span><span class="s5">18</span><span class="s2">,</span>
+                          <span class="s0">color</span><span class="s2">: </span><span class="s0">Colors</span><span class="s2">.</span><span class="s0">green</span><span class="s2">,</span>
+                          <span class="s0">fontFamily</span><span class="s2">: </span><span class="s1">'Overpass'</span>
+                        <span class="s2">),</span>
+                      <span class="s2">)</span>
+                    <span class="s2">],</span>
+                <span class="s2">),</span>
+              <span class="s2">),</span>
+              <span class="s0">Container</span><span class="s2">(</span>
+                <span class="s0">height</span><span class="s2">: </span><span class="s0">MediaQuery</span><span class="s2">.</span><span class="s0">of</span><span class="s2">(</span><span class="s0">context</span><span class="s2">).</span><span class="s0">size</span><span class="s2">.</span><span class="s0">height </span><span class="s2">- </span><span class="s5">100</span><span class="s2">,</span>
+                <span class="s0">width</span><span class="s2">: </span><span class="s0">MediaQuery</span><span class="s2">.</span><span class="s0">of</span><span class="s2">(</span><span class="s0">context</span><span class="s2">).</span><span class="s0">size</span><span class="s2">.</span><span class="s0">width</span><span class="s2">,</span>
+                <span class="s0">child</span><span class="s2">: </span><span class="s0">WebView</span><span class="s2">(</span>
+                    <span class="s0">onPageFinished</span><span class="s2">:(</span><span class="s0">val</span><span class="s2">){</span>
+                      <span class="s0">print</span><span class="s2">(</span><span class="s0">val</span><span class="s2">);</span>
+                    <span class="s2">},</span>
+                    <span class="s4">//javascriptMode: JavascriptMode.unrestricted,</span>
+                    <span class="s0">initialUrl</span><span class="s2">: </span><span class="s0">finalUrl</span><span class="s2">,</span>
+                    <span class="s0">onWebViewCreated</span><span class="s2">: (</span><span class="s0">WebViewController webViewController</span><span class="s2">){</span>
+                      <span class="s0">setState</span><span class="s2">(() {</span>
+                        <span class="s0">_controller</span><span class="s2">.</span><span class="s0">complete</span><span class="s2">(</span><span class="s0">webViewController</span><span class="s2">);</span>
+                      <span class="s2">});</span>
+                    <span class="s2">}),</span>
+              <span class="s2">)</span>
+            <span class="s2">],</span>
+          <span class="s2">)</span>
+      <span class="s2">),</span>
+    <span class="s2">);</span>
+  <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>
