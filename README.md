@@ -10,7 +10,7 @@ To this end, we developed a user-friendly application designed to address the is
 
 This project was brought to life using Flutter and Dart—technologies from Google. Flutter, an open-source UI software development kit, coupled with Dart, a versatile programming language, enabled us to craft a sleek, responsive mobile application. This endeavor was not only our first foray into utilizing Flutter and Dart but also our inaugural experience in creating a fully functional mobile app.
 
-The journey of building this app has been immensely educational, offering us invaluable insights into mobile app development and the intricacies of Flutter and Dart. As we look to the future, we are excited to enhance our app's functionality further. Our next steps include enabling users to input multiple ingredients simultaneously and introducing a feature to capture images of the ingredients they wish to utilize. Through these enhancements, we aim to make our app even more accessible and effective in promoting sustainable living practices.
+The journey of building this app has been immensely educational, offering us invaluable insights into mobile app development and the intricacies of Flutter and Dart. As we look to the future, we are excited to enhance our app's functionality further. Our next steps include enabling users to input multiple ingredients simultaneously and introducing a feature to capture images of the ingredients they wish to utilize. Through these enhancements, our team aims to make our app even more accessible and effective in promoting sustainable living practices.
 This project is a starting point for a Flutter application.
 
 ## Authors
