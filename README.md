@@ -4,7 +4,7 @@ This application stands as a bridge between the abundance of unused ingredients 
 
 ## Project Description
 
-Our project was inspired by the ambitious United Nations Sustainable Development Goals (SDGs), specifically aligning with the objectives outlined in Goals 3 (Good Health and Well-being) and 12 (Responsible Consumption and Production). Recognizing the complexity of these global challenges, which extend beyond the realm of simple technological solutions, our hackathon team aimed to contribute to these goals through a practical approach: promoting healthy eating habits and minimizing food waste.
+Our project was inspired by the ambitious United Nations Sustainable Development Goals (SDGs), specifically aligning with the objectives outlined in Goals 3 (Good Health and Well-being) and 12 (Responsible Consumption and Production). Recognizing the complexity of these global challenges, which extend beyond the realm of simple just technological solutions, our hackathon team aimed to contribute to these goals through a practical approach: promoting healthy eating habits and minimizing food waste.
 
 To this end, we developed a user-friendly application designed to address the issue of food waste at an individual level. Our app empowers users to combat food waste by allowing users to enter ingredients they need to use imminently—particularly those nearing expiration. Upon input, the app dynamically generates a selection of 12 appealing recipes, complete with images. Users can then click on an image to be directed to the full recipe on the original website, providing a seamless and intuitive experience.
 
